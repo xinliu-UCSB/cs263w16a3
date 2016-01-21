@@ -24,7 +24,7 @@ public class Worker extends HttpServlet {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
 	datastore.put(tne);
-	syncCache.put(keyname, value);
-	System.err.println( "Stored " + keyname + " and " + value + " in Datastore and Memcache" );
+	syncCache.put(keyname, new TaskData(keyname, value, date) );
+	System.err.println( "Stored " + keyname + ": " + value + " in Datastore and Memcache" );
     }
 }

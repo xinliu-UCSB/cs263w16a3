@@ -13,6 +13,7 @@ public class DatastoreServlet extends HttpServlet {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
 
+
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
       resp.setContentType("text/html");
@@ -35,20 +36,22 @@ public class DatastoreServlet extends HttpServlet {
 	  Set<String> memKeys = map.keySet();
 	  resp.getWriter().println("<br />All elements of kind TaskData in Memcache:");
 	  for(String key : memKeys) {
-		resp.getWriter().println( "<br />" + key + ": " + (String)map.get(key) );
+		TaskData mv =(TaskData) map.get(key);
+		resp.getWriter().println( "<br />" + key + ": " + mv.getValue() );
 	  }
 	
       } else if(keyname != null && value == null) {
 	//check memcache for the key
-	String memValue = (String) syncCache.get(keyname);
+	TaskData mv = (TaskData) syncCache.get(keyname);
 	Key entKey = KeyFactory.createKey("TaskData", keyname);
 	try{
 	  Entity ent = datastore.get(entKey);
-	  if(memValue != null) {
-		resp.getWriter().println(keyname + ": " + memValue +" (Both)");
+	  if(mv != null) {
+		String TaskData = mv.getValue();
+		resp.getWriter().println(keyname + ": " + TaskData +" (Both)");
 	  } else {
 		resp.getWriter().println(keyname + ": " + ent.getProperty("value") + " (DataStore)");
-		syncCache.put(keyname, ent.getProperty("value") );
+		syncCache.put(keyname, new TaskData( keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date")) );
 	  }
 	  //resp.getWriter().println(  "key: " + keyname + " value: " + ent.getProperty("value")  );
 	} catch(EntityNotFoundException e) {
@@ -60,7 +63,8 @@ public class DatastoreServlet extends HttpServlet {
 	Date date = new Date();
 	tne.setProperty( "date", date );
 	datastore.put(tne);
-	syncCache.put(keyname, value);
+	TaskData mv = new TaskData(keyname, value, date);
+	syncCache.put(keyname, mv);
 	resp.getWriter().println( "Stored " + keyname + " and " + value + " in Datastore and Memcache" );
       } else {
         resp.getWriter().println("ERROR: incorrect parameters have been passed in.");
@@ -68,6 +72,5 @@ public class DatastoreServlet extends HttpServlet {
 
       resp.getWriter().println("</body></html>");
   }
-
 
 }
