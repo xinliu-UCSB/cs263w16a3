@@ -29,11 +29,15 @@ public class TaskDataResource {
     //add your code here (get Entity from datastore using this.keyname)
     // throw new RuntimeException("Get: TaskData with " + keyname +  " not found");
     //if not found
+	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+	TaskData td = (TaskData) syncCache.get(this.keyname);
+	if(td != null) return td;
+
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	Key entKey = KeyFactory.createKey("TaskData", this.keyname);
 	try{
 	  	Entity ent = datastore.get(entKey);
-		TaskData td = new TaskData( this.keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date") );
+		td = new TaskData( this.keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date") );
 		return td;
 	} catch(EntityNotFoundException e) {
 		throw new RuntimeException("Get: TaskData with " + this.keyname +  " not found");

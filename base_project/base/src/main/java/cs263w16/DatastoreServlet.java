@@ -29,7 +29,7 @@ public class DatastoreServlet extends HttpServlet {
 	  PreparedQuery pq = datastore.prepare(q);
 	  List<String> keys = new LinkedList<String>();
 	  for (Entity ent : pq.asIterable()) {
-	    resp.getWriter().println( "<br />" + ent.getKey().getName() + ": " + ent.getProperty("value") );
+	    resp.getWriter().println( "<br />" + ent.getKey().getName() + ": " + ent.getProperty("value") + ": " + ent.getProperty("date") );
 		keys.add( ent.getKey().getName() ); 
 	  }
 	  Map<String, Object> map = syncCache.getAll(keys);
@@ -37,20 +37,19 @@ public class DatastoreServlet extends HttpServlet {
 	  resp.getWriter().println("<br />All elements of kind TaskData in Memcache:");
 	  for(String key : memKeys) {
 		TaskData mv =(TaskData) map.get(key);
-		resp.getWriter().println( "<br />" + key + ": " + mv.getValue() );
+		resp.getWriter().println( "<br />" + key + ": " + mv.getValue() + ": " + mv.getDate() );
 	  }
 	
       } else if(keyname != null && value == null) {
 	//check memcache for the key
 	TaskData mv = (TaskData) syncCache.get(keyname);
 	Key entKey = KeyFactory.createKey("TaskData", keyname);
-	try{
-	  Entity ent = datastore.get(entKey);
+	try{	  
 	  if(mv != null) {
-		String TaskData = mv.getValue();
-		resp.getWriter().println(keyname + ": " + TaskData +" (Both)");
+		resp.getWriter().println(keyname + ": " + mv.getValue()  + ": " + mv.getDate() +" (Both)");
 	  } else {
-		resp.getWriter().println(keyname + ": " + ent.getProperty("value") + " (DataStore)");
+		Entity ent = datastore.get(entKey);
+		resp.getWriter().println(keyname + ": " + (String) ent.getProperty("value") + ": " +  (Date) ent.getProperty("Date") + " (DataStore)");
 		syncCache.put(keyname, new TaskData( keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date")) );
 	  }
 	  //resp.getWriter().println(  "key: " + keyname + " value: " + ent.getProperty("value")  );
