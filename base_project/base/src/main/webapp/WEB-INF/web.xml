@@ -42,4 +42,61 @@
   <servlet-name>Jersey REST Service</servlet-name>
   <url-pattern>/rest/*</url-pattern>
  </servlet-mapping>
+
+<!--grade-->
+   <servlet>
+    <servlet-name>grade</servlet-name>
+    <servlet-class>cs263w16.grade.GradesServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>grade</servlet-name>
+    <url-pattern>/grade</url-pattern>
+   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>grade_enqueue</servlet-name>
+    <servlet-class>cs263w16.grade.Enqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>grade_enqueue</servlet-name>
+    <url-pattern>/grade/enqueue</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>grade_worker</servlet-name>
+    <servlet-class>cs263w16.grade.Worker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>grade_worker</servlet-name>
+    <url-pattern>/grade/worker</url-pattern>
+  </servlet-mapping> 
+
+<!--comment-->
+   <servlet>
+    <servlet-name>comment</servlet-name>
+    <servlet-class>cs263w16.comment.CommentsServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>comment</servlet-name>
+    <url-pattern>/comment</url-pattern>
+   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>comment_enqueue</servlet-name>
+    <servlet-class>cs263w16.comment.Enqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>comment_enqueue</servlet-name>
+    <url-pattern>/comment/enqueue</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>comment_worker</servlet-name>
+    <servlet-class>cs263w16.comment.Worker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>comment_worker</servlet-name>
+    <url-pattern>/comment/worker</url-pattern>
+  </servlet-mapping> 
+
 </web-app>
