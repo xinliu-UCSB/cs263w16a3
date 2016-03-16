@@ -258,5 +258,14 @@
     <url-pattern>/grade/update_worker</url-pattern>
   </servlet-mapping> 
 
+<!--url test-->
+   <servlet>
+    <servlet-name>course_test_worker</servlet-name>
+    <servlet-class>course.CourseTestWorker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>course_test_worker</servlet-name>
+    <url-pattern>/couseTest/worker</url-pattern>
+  </servlet-mapping> 
 
 </web-app>

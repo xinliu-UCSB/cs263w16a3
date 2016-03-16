@@ -108,11 +108,13 @@ public class CourseResource {
 	Key entKey = KeyFactory.createKey("Course", courseID);
 	try {
 		//if it is, signal that we updated the entity
+		//In order not to affect the running app, cannot update an existing course
 		Entity courseEnt = datastore.get(entKey);
-        	courseEnt.setProperty("courseID", courseID);
+/*        	courseEnt.setProperty("courseID", courseID);
         	courseEnt.setProperty("courseName", courseName);
         	courseEnt.setProperty("instructorID", instructorList);
 		datastore.put(courseEnt);
+*/
 		res = Response.noContent().build();
 	}  catch(EntityNotFoundException e) {
 		//if it is not, create it and 
