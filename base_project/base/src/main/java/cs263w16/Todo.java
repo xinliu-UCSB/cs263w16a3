@@ -1,27 +1,13 @@
 package cs263w16;
 
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
+// JAX-RS supports an automatic mapping from JAXB annotated class to XML and JSON
+// Isn't that cool?
 public class Todo {
-  private String id;
   private String summary;
   private String description;
-  
-  public Todo(){
-    
-  }
-  public Todo (String id, String summary){
-    this.id = id;
-    this.summary = summary;
-  }
-  public String getId() {
-    return id;
-  }
-  public void setId(String id) {
-    this.id = id;
-  }
   public String getSummary() {
     return summary;
   }
@@ -34,6 +20,6 @@ public class Todo {
   public void setDescription(String description) {
     this.description = description;
   }
-  
-  
+
+
 }

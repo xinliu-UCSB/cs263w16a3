@@ -29,18 +29,19 @@ public class TaskDataResource {
     //add your code here (get Entity from datastore using this.keyname)
     // throw new RuntimeException("Get: TaskData with " + keyname +  " not found");
     //if not found
-	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-	TaskData td = (TaskData) syncCache.get(this.keyname);
-	if(td != null) return td;
-
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	Key entKey = KeyFactory.createKey("TaskData", this.keyname);
+  MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+  if(syncCache.get(keyname)!=null){
+    TaskData ts = (TaskData)syncCache.get(keyname);
+    return ts;
+  }
+	Key entKey = KeyFactory.createKey("TaskData", keyname);
 	try{
-	  	Entity ent = datastore.get(entKey);
-		td = new TaskData( this.keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date") );
-		return td;
+	  Entity ent = datastore.get(entKey);
+		TaskData ts = new TaskData( keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date") );
+		return ts;
 	} catch(EntityNotFoundException e) {
-		throw new RuntimeException("Get: TaskData with " + this.keyname +  " not found");
+		throw new RuntimeException("Get: TaskData with " + keyname +  " not found");
 	}
   }
 
@@ -49,20 +50,20 @@ public class TaskDataResource {
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public TaskData getTaskData() {
     //same code as above method
-	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-	TaskData td = (TaskData) syncCache.get(this.keyname);
-	if(td != null) return td;
-
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	Key entKey = KeyFactory.createKey("TaskData", this.keyname);
-	try{
-	  	Entity ent = datastore.get(entKey);
-		td = new TaskData( this.keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date") );
-		syncCache.put(keyname, td);
-		return td;
-	} catch(EntityNotFoundException e) {
-		throw new RuntimeException("Get: TaskData with " + this.keyname +  " not found");
-	}
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+    if(syncCache.get(keyname)!=null){
+      TaskData ts = (TaskData)syncCache.get(keyname);
+      return ts;
+    }
+  	Key entKey = KeyFactory.createKey("TaskData", keyname);
+  	try{
+  	  Entity ent = datastore.get(entKey);
+  		TaskData ts = new TaskData( keyname, (String) ent.getProperty("value"), (Date) ent.getProperty("date") );
+  		return ts;
+  	} catch(EntityNotFoundException e) {
+  		throw new RuntimeException("Get: TaskData with " + keyname +  " not found");
+  	}
   }
 
   @PUT
@@ -73,25 +74,26 @@ public class TaskDataResource {
     //first check if the Entity exists in the datastore
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-
-	Key entKey = KeyFactory.createKey("TaskData", this.keyname);
+  syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
+	Key entKey = KeyFactory.createKey("TaskData", keyname);
 	Date date = new Date();
 	try{
 		//if it is, signal that we updated the entity
-	  	Entity ent = datastore.get(entKey);
-		ent.setProperty("value", value);
-		ent.setProperty("date", date );
+	  Entity ts = datastore.get(entKey);
+		ts.setProperty("value", value);
+		ts.setProperty("date", date );
+    datastore.put(ts);
 		res = Response.noContent().build();
 	} catch(EntityNotFoundException e) {
-		//if it is not, create it and 
-    		//signal that we created the entity in the datastore 
-		Entity tne = new Entity("TaskData", this.keyname);
-		tne.setProperty("value", value);
-		tne.setProperty( "date", date );
-		datastore.put(tne);
+		//if it is not, create it and
+    		//signal that we created the entity in the datastore
+		Entity taskdata = new Entity("TaskData", keyname);
+		taskdata.setProperty("value", value);
+		taskdata.setProperty( "date", date );
+		datastore.put(taskdata);
 		res = Response.created(uriInfo.getAbsolutePath()).build();
-	} 
-	TaskData td = new TaskData( this.keyname, value, date);
+	}
+	TaskData td = new TaskData( keyname, value, date);
 	syncCache.put(keyname, td);
     return res;
   }
@@ -103,14 +105,16 @@ public class TaskDataResource {
     //just print a message upon exception (don't throw)
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-	syncCache.delete(this.keyname);
-	Key entKey = KeyFactory.createKey("TaskData", this.keyname);
+  if(syncCache.get(keyname)!=null){
+    syncCache.delete(keyname);
+  }
+	Key entKey = KeyFactory.createKey("TaskData", keyname);
 	try{
 	  	Entity ent = datastore.get(entKey);
 		datastore.delete(entKey);
-		System.err.println("Delete: TaskData with " + this.keyname +  " deleted in Datastore");
+		System.err.println("TaskData deleted in Datastore");
 	} catch(EntityNotFoundException e) {
-		System.err.println("Delete: TaskData with " + this.keyname +  " not found in Datastore");
+		System.err.println("TaskData not found in Datastore");
     }
   }
-} 
+}

@@ -8,23 +8,24 @@ import java.util.*;
 import java.util.logging.*;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.memcache.*;
-
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 
 public class Worker extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyname = request.getParameter("keyname");
-	String value = request.getParameter("value");
-
-	//create an Entity of kind TaskData and put it into Datastore.
-	Entity tne = new Entity("TaskData", keyname);
-	tne.setProperty("value", value);
-	Date date = new Date();
-	tne.setProperty( "date", date );
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-	datastore.put(tne);
-	syncCache.put(keyname, new TaskData(keyname, value, date) );
-	System.err.println( "Stored " + keyname + ": " + value + " in Datastore and Memcache" );
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        MemcacheService sync = MemcacheServiceFactory.getMemcacheService();
+        String key = request.getParameter("keyname");
+        String value = request.getParameter("value");
+        // Do something with key.
+        Entity td = new Entity("TaskData", key);
+        td.setProperty("value", value);
+        Date date = new Date();
+        td.setProperty("date", date);
+        datastore.put(td);
+        TaskData m1 = new TaskData(key, value, date);
+        sync.put(key, m1);
     }
 }

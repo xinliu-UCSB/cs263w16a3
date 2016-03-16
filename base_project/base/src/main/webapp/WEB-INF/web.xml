@@ -1,32 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+   <servlet>
+    <servlet-name>datastore</servlet-name>
+    <servlet-class>cs263w16.DatastoreServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>datastore</servlet-name>
+    <url-pattern>/datastore</url-pattern>
+   </servlet-mapping>
 
- <servlet>
-  <servlet-name>datastore</servlet-name>
-  <servlet-class>cs263w16.DatastoreServlet</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>datastore</servlet-name>
-  <url-pattern>/datastore</url-pattern>
- </servlet-mapping>
+   <servlet>
+    <servlet-name>courseenqueue</servlet-name>
+    <servlet-class>course.CourseEnqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>courseenqueue</servlet-name>
+    <url-pattern>/courseenqueue</url-pattern>
+   </servlet-mapping>
 
- <servlet>
-  <servlet-name>worker</servlet-name>
-  <servlet-class>cs263w16.Worker</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>worker</servlet-name>
-  <url-pattern>/worker</url-pattern>
- </servlet-mapping>
 
- <servlet>
-  <servlet-name>enqueue</servlet-name>
-  <servlet-class>cs263w16.Enqueue</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>enqueue</servlet-name>
-  <url-pattern>/enqueue</url-pattern>
- </servlet-mapping>
+   <servlet>
+    <servlet-name>courseworker</servlet-name>
+    <servlet-class>course.CourseWorker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>courseworker</servlet-name>
+    <url-pattern>/courseworker</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>studentenqueue</servlet-name>
+    <servlet-class>student.StudentEnqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>studentenqueue</servlet-name>
+    <url-pattern>/studentenqueue</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>instructorenqueue</servlet-name>
+    <servlet-class>instructor.InstructorEnqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>instructorenqueue</servlet-name>
+    <url-pattern>/instructorenqueue</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>instructorupload</servlet-name>
+    <servlet-class>instructor.InstructorUpload</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>instructorupload</servlet-name>
+    <url-pattern>/instructor/upload</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>studentupload</servlet-name>
+    <servlet-class>student.StudentUpload</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>studentupload</servlet-name>
+    <url-pattern>/student/upload</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>instructoradd</servlet-name>
+    <servlet-class>instructor.InstructorAdd</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>instructoradd</servlet-name>
+    <url-pattern>/instructor/addphoto</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>instructorserve</servlet-name>
+    <servlet-class>instructor.InstructorServe</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>instructorserve</servlet-name>
+    <url-pattern>/instructor/serve</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>addinstructor</servlet-name>
+    <servlet-class>instructor.AddInstructor</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>addinstructor</servlet-name>
+    <url-pattern>/addinstructor</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>deleteinstructor</servlet-name>
+    <servlet-class>instructor.DeleteInstructor</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>deleteinstructor</servlet-name>
+    <url-pattern>/deleteinstructor</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>deletestudent</servlet-name>
+    <servlet-class>student.DeleteStudent</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>deletestudent</servlet-name>
+    <url-pattern>/deletestudent</url-pattern>
+   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>enqueue</servlet-name>
+    <servlet-class>cs263w16.Enqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>enqueue</servlet-name>
+    <url-pattern>/enqueue</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>studentworker</servlet-name>
+    <servlet-class>student.StudentWorker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>studentworker</servlet-name>
+    <url-pattern>/studentworker</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>instructorworker</servlet-name>
+    <servlet-class>instructor.InstructorWorker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>instructorworker</servlet-name>
+    <url-pattern>/instructorworker</url-pattern>
+  </servlet-mapping>
+
+
+  <welcome-file-list>
+    <welcome-file>welcome.jsp</welcome-file>
+  </welcome-file-list>
 
  <servlet>
   <servlet-name>Jersey REST Service</servlet-name>
@@ -53,6 +166,33 @@
     <url-pattern>/grade</url-pattern>
    </servlet-mapping>
 
+   <servlet>
+    <servlet-name>student_grade</servlet-name>
+    <servlet-class>cs263w16.grade.StudentGradeServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>student_grade</servlet-name>
+    <url-pattern>/student/grade</url-pattern>
+   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>grade_enqueue_batch</servlet-name>
+    <servlet-class>cs263w16.grade.EnqueueBatch</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>grade_enqueue_batch</servlet-name>
+    <url-pattern>/grade/enqueue_batch</url-pattern>
+   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>grade_batch_worker</servlet-name>
+    <servlet-class>cs263w16.grade.GradeBatchWorker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>grade_batch_worker</servlet-name>
+    <url-pattern>/grade/batch_worker</url-pattern>
+   </servlet-mapping>
+
   <servlet>
     <servlet-name>grade_enqueue</servlet-name>
     <servlet-class>cs263w16.grade.Enqueue</servlet-class>
@@ -73,17 +213,17 @@
 
 <!--comment-->
    <servlet>
-    <servlet-name>comment</servlet-name>
-    <servlet-class>cs263w16.comment.CommentsServlet</servlet-class>
+    <servlet-name>grade_comment</servlet-name>
+    <servlet-class>cs263w16.grade.CommentsServlet</servlet-class>
    </servlet>
    <servlet-mapping>
-    <servlet-name>comment</servlet-name>
-    <url-pattern>/comment</url-pattern>
+    <servlet-name>grade_comment</servlet-name>
+    <url-pattern>/grade_comment</url-pattern>
    </servlet-mapping>
 
   <servlet>
     <servlet-name>comment_enqueue</servlet-name>
-    <servlet-class>cs263w16.comment.Enqueue</servlet-class>
+    <servlet-class>cs263w16.grade.CommentEnqueue</servlet-class>
    </servlet>
    <servlet-mapping>
     <servlet-name>comment_enqueue</servlet-name>
@@ -92,11 +232,31 @@
 
    <servlet>
     <servlet-name>comment_worker</servlet-name>
-    <servlet-class>cs263w16.comment.Worker</servlet-class>
+    <servlet-class>cs263w16.grade.CommentWorker</servlet-class>
    </servlet>
    <servlet-mapping>
     <servlet-name>comment_worker</servlet-name>
     <url-pattern>/comment/worker</url-pattern>
   </servlet-mapping> 
+
+<!--update grade-->
+  <servlet>
+    <servlet-name>update_enqueue</servlet-name>
+    <servlet-class>cs263w16.grade.UpdateEnqueue</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>update_enqueue</servlet-name>
+    <url-pattern>/grade/update_enqueue</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+    <servlet-name>update_worker</servlet-name>
+    <servlet-class>cs263w16.grade.UpdateWorker</servlet-class>
+   </servlet>
+   <servlet-mapping>
+    <servlet-name>update_worker</servlet-name>
+    <url-pattern>/grade/update_worker</url-pattern>
+  </servlet-mapping> 
+
 
 </web-app>

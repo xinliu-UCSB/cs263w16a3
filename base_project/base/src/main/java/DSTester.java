@@ -22,11 +22,11 @@ public class DSTester {
     Client client = ClientBuilder.newClient(config);
     WebTarget service = client.target(getBaseURI());
 
-    //Delete an entity from  the Datastore 
+    //Delete an entity from  the Datastore
     String keyname = "dstester1";
     service.path("rest").path("ds").path(keyname).request().delete();
 
-    //Create an new entity with this keyname in the Datastore 
+    //Create an new entity with this keyname in the Datastore
     String val = "101";
     Response response = service.path("rest").path("ds").path(keyname).request(MediaType.APPLICATION_XML).put(Entity.entity(val,MediaType.APPLICATION_XML),Response.class);
 
@@ -166,4 +166,4 @@ public class DSTester {
   private static URI getBaseURI() {
     return UriBuilder.fromUri("http://localhost:8080/").build();
   }
-} 
+}
