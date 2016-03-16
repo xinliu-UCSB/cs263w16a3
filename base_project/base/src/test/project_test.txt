@@ -1,0 +1,26 @@
+curl -X GET http://localhost:8080/rest/courses
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><courses><course><courseID>CS24</courseID><courseName>C++</courseName></course><course><courseID>CS8</courseID><courseName>Introduction to CS</courseName></course></courses>
+
+can get instructors, not shown
+
+curl -X GET http://localhost:8080/rest/courses/CS8
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><course><courseID>CS8</courseID><courseName>Introduction to CS</courseName></course>
+
+curl -H "Accept: application/json" -X GET http://localhost:8080/rest/courses
+[{"courseID":"CS24","courseName":"C++","intructorID":["In0001"," In0003"]},{"courseID":"CS8","courseName":"Introduction to CS","intructorID":["In0001","In0002"]}]
+
+curl -H "Accept: application/json" -X GET http://localhost:8080/rest/courses/CS8
+{"courseID":"CS8","courseName":"Introduction to CS","intructorID":["In0001","In0002"]}
+
+curl -X POST --data "courseID=c001&courseName=new_course&instructors=In0001,In0003" http://localhost:8080/rest/courses
+
+curl -H "Accept: application/json" -X GET http://localhost:8080/rest/courses/c001
+{"courseID":"c001","courseName":"new_course","intructorID":["In0001","In0003"]}
+
+not work:
+curl -H "Content-Type: application/xml" -X PUT --data "courseName=Programming in Python" http://localhost:8080/rest/courses/CS8
+
+curl -H "Content-Type: application/xml" -X PUT --data "courseName=new_course" http://localhost:8080/rest/courses/course001
+
+
