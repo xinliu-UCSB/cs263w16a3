@@ -12,7 +12,7 @@
     <head>
       <link rel="stylesheet" href="../css/bootstrap.min.css"/>         
       <script src="../js/bootstrap.min.js"></script> 
-      <title>List Student Grade</title>      
+      <title>Student Grade List</title>      
     </head>
 
 
@@ -48,7 +48,7 @@
     <form action="/student/grade" method="get"  id="seachGradeForm" role="form">
 	<div class="form-group col-xs-5">
 	<input type="hidden" name="courseID" value=${fn:escapeXml(courseID)}>
-	grade name:
+	grade subject:
 	<input type="text" name="name"><br>
 	</div>
       <button type="submit" class="btn btn-info">

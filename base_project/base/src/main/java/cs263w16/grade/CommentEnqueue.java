@@ -54,8 +54,8 @@ public class CommentEnqueue extends HttpServlet {
 			.param("userType", senderInfo[1]).param("name", name)
 			.param("content", content) ) ;
 
-//        	resp.sendRedirect("/done.html");
-		forwardGradeComment(req, resp, userID, gradeKeyname);
+        	resp.sendRedirect("/done.html");
+//		forwardGradeComment(req, resp, userID, gradeKeyname);
 	} else {
 		resp.sendRedirect("/welcome.jsp");
 	}

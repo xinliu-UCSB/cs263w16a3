@@ -102,7 +102,7 @@
   	%>
   	<form action="/studentenqueue" method="post">
   		Add Student Roster<br>
-		studentID, Last Name, First-Middle Nmae, email; (Please use ';' to seperate students, use ',' to seperate properties):<br>
+		perm #, Last Name, First-Middle Nmae, email; (Please use ';' to seperate students, use ',' to seperate properties):<br>
   		<input type="hidden" name="courseID" value=${fn:escapeXml(courseID)}>
   		<input type="textarea" style="width: 400px; height: 50px" name="roster"><br>
   		<input type="submit" value="Submit">
@@ -122,7 +122,7 @@
   	<%
   	Filter propertyFilter1 = new FilterPredicate("courseID", FilterOperator.EQUAL, courseID);
 	try{
-		Query q = new Query("Student").setFilter(propertyFilter1).addSort("perm", SortDirection.ASCENDING);
+		Query q = new Query("Student").setFilter(propertyFilter1);
 		List<Entity> students = datastore.prepare(q).asList(FetchOptions.Builder.withDefaults());
 		for(Entity student : students){
 			String perm = (String) student.getProperty("perm");

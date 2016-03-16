@@ -45,15 +45,16 @@ public class CommentsServlet extends HttpServlet {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
 
-	UserService userService = UserServiceFactory.getUserService();
+/*	UserService userService = UserServiceFactory.getUserService();
 	User user = userService.getCurrentUser();
 
 	if (user == null) {
 		System.err.println( "Error in CommentsServlet: User has not logged in, but try to view comment" );
 		resp.sendRedirect("/welcome.jsp");
 	}
-
+*/
         String gradeKeyname = req.getParameter("gradeKeyname");
+	String courseID = req.getParameter("courseID");
 	Key gradeKey = null;
 
     try{
@@ -102,37 +103,36 @@ public class CommentsServlet extends HttpServlet {
 		 ( (Long) grade.getProperty("score") ).intValue(),  (String) grade.getProperty("grader"),  
 		 (Date) grade.getProperty("date"),  (String) grade.getProperty("attribute") );
 
+
 //calculte the percentile
 	int thisScore = ( (Long) grade.getProperty("score") ).intValue();
 	String gradeName = (String) grade.getProperty("name");
 	Filter gradeNameFilter = new FilterPredicate("name", FilterOperator.EQUAL, gradeName);
 	Key parentCourseKey = grade.getParent();
 	Query gradeQuery = new Query("Grade").setAncestor(parentCourseKey)
-				.setFilter(gradeNameFilter)
-				.addSort("score", SortDirection.ASCENDING);
+				.setFilter(gradeNameFilter);
 	PreparedQuery gradePQ = datastore.prepare(gradeQuery);
 
-	List<Integer> scoreList = new ArrayList<>();
+	ArrayList<Integer> scoreList = new ArrayList<>();
 	for (Entity ent : gradePQ.asIterable()) {
 		scoreList.add( ( (Long) ent.getProperty("score") ).intValue() );
 	}
 	int scoreSize = scoreList.size();
-/*	System.out.println("calculate percentile: total size is " + scoreSize);
-	System.out.print("the scoreList is: ");
-	for(int i = 0; i < scoreSize; i++) {
-		System.out.print(scoreList.get(i) + ", ");
-	}
-*/
-	int median = (int) ( ( scoreList.get( (int) ((scoreSize-1) / 2) ) + scoreList.get( (int) (scoreSize / 2) ) ) / 2 );
+	Integer[] scoreArray = new Integer[scoreSize];
+	scoreArray = scoreList.toArray(scoreArray);
+	Arrays.sort(scoreArray);
+	int median = (int) ( ( scoreArray[ (int) ((scoreSize-1) / 2) ] + scoreArray[ (int) (scoreSize / 2) ] ) / 2 );
 
 	int index = scoreSize - 1;
-	while ( thisScore < scoreList.get(index) ) {index--;}
+	while ( thisScore < scoreArray[index] ) {index--;}
 	index++;
 	int percentile = (int) ( (index * 100) / scoreSize );
 	System.out.println("CommentsServlet forward with grade and commentList.");
-	 forwardTo( "/grade/grade_comment.jsp", req, resp, gradeKeyname, g, 
+	 forwardTo( "/grade/grade_comment.jsp", req, resp, gradeKeyname, courseID, g, 
 			commentList, Integer.toString(median), Integer.toString(percentile) );
-	
+
+	forwardTo( "/grade/grade_comment.jsp", req, resp, gradeKeyname, courseID, g, 
+			commentList);	
       } catch(Exception exp) {
 		System.out.println( "Error in CommentsServlet: gradeKeyname to key exception - " + exp.getMessage() );
       }
@@ -150,21 +150,23 @@ public class CommentsServlet extends HttpServlet {
 
 
     private void forwardTo (String nextJSP, HttpServletRequest req, HttpServletResponse resp, 
-			String gradeKeyname, Grade grade, List<Comment> commentList)
+			String gradeKeyname, String courseID, Grade grade, List<Comment> commentList)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         req.setAttribute("gradeKeyname", gradeKeyname);
+        req.setAttribute("courseID", courseID);
         req.setAttribute("grade", grade);
         req.setAttribute("commentList", commentList);
         dispatcher.forward(req, resp);
     } 
 
     private void forwardTo (String nextJSP, HttpServletRequest req, HttpServletResponse resp, 
-			String gradeKeyname, Grade grade, List<Comment> commentList,
+			String gradeKeyname, String courseID, Grade grade, List<Comment> commentList,
 			String median, String percentile)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
         req.setAttribute("gradeKeyname", gradeKeyname);
+        req.setAttribute("courseID", courseID);
         req.setAttribute("grade", grade);
         req.setAttribute("commentList", commentList);
         req.setAttribute("median", median);

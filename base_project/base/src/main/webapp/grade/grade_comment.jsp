@@ -12,7 +12,8 @@
 <html>
     <head>
       <link rel="stylesheet" href="../css/bootstrap.min.css"/>         
-       <script src="../js/bootstrap.min.js"></script>     
+       <script src="../js/bootstrap.min.js"></script>  
+       <title>Comments</title>   
     </head>
 
   <body>
@@ -76,7 +77,7 @@
                         <div class="alert alert-info">
                             The median for ${fn:escapeXml(name)} is ${fn:escapeXml(median)}, and your percentile is ${fn:escapeXml(percentile)}% for this grade.
                         </div>
- 
+
 		<%
 		} else {
 		%>                    
@@ -166,6 +167,7 @@
 	<!--AddComment Form -->
     <form action="/comment/enqueue" method="post"  id="addComment" role="form">
 	<input type="hidden" name="gradeKeyname" value=${fn:escapeXml(gradeKeyname)}>
+	<input type="hidden" name="courseID" value=${fn:escapeXml(courseID)}>
 	<input type="hidden" name="email" value=${fn:escapeXml(email)}>
 	<input type="hidden" name="userID" value=${fn:escapeXml(userID)}>
 	Subject:

@@ -44,7 +44,7 @@
 	<input type="hidden" name="courseID" value=${fn:escapeXml(courseID)}><br>
 	studentID:
 	<input type="text" name="studentID"><br>
-	grade name:
+	grade subject:
 	<input type="text" name="name"><br>
 	</div>
       <button type="submit" class="btn btn-info">

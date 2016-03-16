@@ -76,8 +76,6 @@ public class GradeBatchWorker extends HttpServlet {
 		tne.setProperty("attribute", attribute);
 		tne.setProperty("hasNewComment", new Boolean(false) );
 		gradeList.add(tne);
-		//System.out.println("GradeBatchWorker: add " + i + " studentID: " + studentID 
-				+ " score: " + scoreInt);
 	}
 
 	datastore.put(gradeList);
