@@ -1,0 +1,27 @@
+1. Datastore
+
+Get data from datastore(not affect memcache):
+curl -H "Accept: application/json" -X GET http://myproject-1195.appspot.com/rest/test/ds
+
+Write data to datastore(not affect memcache):
+curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"courseID":"c002","courseName":"new_course","instructorID":"In0001"}' http://myproject-1195.appspot.com/rest/test/ds
+
+2. Memcache
+
+Get data from memcache(not affect datastore):
+curl -H "Accept: application/json" -X GET http://myproject-1195.appspot.com/rest/test/mc/c001
+
+Write data to memcache(not affect datastore):
+curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"courseID":"c001","courseName":"new_course","instructorID":"In0001"}'  http://myproject-1195.appspot.com/rest/test/mc
+
+3. TaskQueue
+Get data from taskqueue:
+curl -H "Accept: application/json" -X GET http://myproject-1195.appspot.com/rest/test/tq
+
+Write a task to taskqueue
+curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"courseID":"c004","courseName":"new_course","instructorID":"In0001"}'  http://myproject-1195.appspot.com/rest/test/tq
+
+
+
+
+
